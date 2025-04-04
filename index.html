@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Markdown解析器</title>
+        <link rel="stylesheet" href="style.css" />
+        <!-- 引入Font Awesome图标库 -->
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        />
+    </head>
+    <body>
+        <div class="container">
+            <header>
+                <h1><i class="fa-brands fa-markdown"></i> Markdown解析器</h1>
+                <div class="theme-toggle">
+                    <button id="themeToggle"><i class="fas fa-sun"></i></button>
+                </div>
+            </header>
+
+            <main>
+                <div class="editor-container">
+                    <div class="editor-header">
+                        <h2>Markdown</h2>
+                        <div class="editor-controls">
+                            <button id="clearButton" title="清空编辑器">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                            <button
+                                id="copyMarkdownButton"
+                                title="复制Markdown"
+                            >
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <textarea
+                        id="markdownInput"
+                        placeholder="在这里输入Markdown文本..."
+                    ></textarea>
+                </div>
+
+                <div class="preview-container">
+                    <div class="preview-header">
+                        <h2>预览</h2>
+                        <div class="preview-controls">
+                            <button id="copyHtmlButton" title="复制HTML">
+                                <i class="fas fa-code"></i>
+                            </button>
+                            <button id="downloadButton" title="下载HTML">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="preview"></div>
+                </div>
+            </main>
+
+            <footer>
+                <div class="markdown-guide">
+                    <h3>Markdown语法指南</h3>
+                    <div class="guide-grid">
+                        <div class="guide-item">
+                            <code># 标题</code>
+                            <span>H1标题</span>
+                        </div>
+                        <div class="guide-item">
+                            <code>## 标题</code>
+                            <span>H2标题</span>
+                        </div>
+                        <div class="guide-item">
+                            <code>**文本**</code>
+                            <span>粗体文本</span>
+                        </div>
+                        <div class="guide-item">
+                            <code>*文本*</code>
+                            <span>斜体文本</span>
+                        </div>
+                        <div class="guide-item">
+                            <code>[链接](url)</code>
+                            <span>超链接</span>
+                        </div>
+                        <div class="guide-item">
+                            <code>![alt](图片url)</code>
+                            <span>图片</span>
+                        </div>
+                        <div class="guide-item">
+                            <code>- 列表项</code>
+                            <span>无序列表</span>
+                        </div>
+                        <div class="guide-item">
+                            <code>1. 列表项</code>
+                            <span>有序列表</span>
+                        </div>
+                        <div class="guide-item">
+                            <code>```代码```</code>
+                            <span>代码块</span>
+                        </div>
+                        <div class="guide-item">
+                            <code>> 引用文本</code>
+                            <span>引用</span>
+                        </div>
+                    </div>
+                </div>
+                <p class="copyright">
+                    © 2023 Markdown解析器 | <a href="#" id="aboutLink">关于</a>
+                </p>
+            </footer>
+        </div>
+
+        <!-- 关于对话框 -->
+        <div id="aboutDialog" class="dialog">
+            <div class="dialog-content">
+                <span class="close-dialog">&times;</span>
+                <h2>关于Markdown解析器</h2>
+                <p>
+                    这是一个简单的Markdown解析器，可以将Markdown文本转换为HTML并实时预览。
+                </p>
+                <p>支持的Markdown语法包括：</p>
+                <ul>
+                    <li>标题 (H1-H6)</li>
+                    <li>粗体和斜体</li>
+                    <li>链接和图片</li>
+                    <li>有序和无序列表</li>
+                    <li>代码块和行内代码</li>
+                    <li>引用</li>
+                    <li>水平线</li>
+                </ul>
+                <p>
+                    使用简单，只需在左侧输入Markdown文本，右侧即可实时预览渲染结果。
+                </p>
+            </div>
+        </div>
+
+        <script src="script.js"></script>
+    </body>
+</html>

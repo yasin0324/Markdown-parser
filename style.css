@@ -1,0 +1,395 @@
+/* 全局样式 */
+:root {
+    --bg-color: #f5f5f5;
+    --text-color: #333;
+    --primary-color: #4b5eff;
+    --secondary-color: #a8b3ff;
+    --border-color: #e0e0e0;
+    --card-bg: #ffffff;
+    --editor-bg: #ffffff;
+    --preview-bg: #ffffff;
+    --code-bg: #f0f0f0;
+    --header-bg: #ffffff;
+    --footer-bg: #f0f0f0;
+    --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
+
+[data-theme="dark"] {
+    --bg-color: #141a2b;
+    --text-color: #ffffff;
+    --primary-color: #4b5eff;
+    --secondary-color: #a8b3ff;
+    --border-color: #2d3755;
+    --card-bg: #1e2538;
+    --editor-bg: #2d3755;
+    --preview-bg: #1e2538;
+    --code-bg: #2d3755;
+    --header-bg: #1e2538;
+    --footer-bg: #1e2538;
+    --shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    transition: var(--transition);
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* 头部样式 */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: var(--header-bg);
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+}
+
+header h1 {
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+header h1 i {
+    color: var(--secondary-color);
+}
+
+.theme-toggle button {
+    background: transparent;
+    border: none;
+    color: var(--secondary-color);
+    font-size: 1.5rem;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.theme-toggle button:hover {
+    background-color: rgba(168, 179, 255, 0.1);
+}
+
+/* 主要内容区域 */
+main {
+    display: flex;
+    gap: 20px;
+    flex: 1;
+    margin-bottom: 20px;
+}
+
+.editor-container,
+.preview-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+.editor-header,
+.preview-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.editor-controls,
+.preview-controls {
+    display: flex;
+    gap: 10px;
+}
+
+.editor-controls button,
+.preview-controls button {
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.editor-controls button:hover,
+.preview-controls button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+#markdownInput {
+    flex: 1;
+    padding: 15px;
+    border: none;
+    resize: none;
+    background-color: var(--editor-bg);
+    color: var(--text-color);
+    font-family: "Consolas", monospace;
+    font-size: 16px;
+    line-height: 1.6;
+    min-height: 500px;
+    transition: var(--transition);
+}
+
+#markdownInput:focus {
+    outline: none;
+}
+
+#preview {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    background-color: var(--preview-bg);
+    color: var(--text-color);
+    min-height: 500px;
+    transition: var(--transition);
+}
+
+/* 预览区域的Markdown样式 */
+#preview h1,
+#preview h2,
+#preview h3,
+#preview h4,
+#preview h5,
+#preview h6 {
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    color: var(--primary-color);
+}
+
+#preview h1 {
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 0.3em;
+}
+
+#preview h2 {
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.2em;
+}
+
+#preview p {
+    margin-bottom: 1em;
+}
+
+#preview a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+#preview a:hover {
+    text-decoration: underline;
+}
+
+#preview img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 1em 0;
+    border-radius: 5px;
+}
+
+#preview ul,
+#preview ol {
+    margin-bottom: 1em;
+    padding-left: 2em;
+}
+
+#preview li {
+    margin-bottom: 0.5em;
+}
+
+#preview blockquote {
+    border-left: 4px solid var(--secondary-color);
+    padding-left: 1em;
+    margin-left: 0;
+    margin-bottom: 1em;
+    color: var(--text-color);
+    background-color: rgba(168, 179, 255, 0.1);
+    padding: 0.5em 1em;
+    border-radius: 0 5px 5px 0;
+}
+
+#preview code {
+    font-family: "Consolas", monospace;
+    background-color: var(--code-bg);
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+    font-size: 0.9em;
+}
+
+#preview pre {
+    background-color: var(--code-bg);
+    padding: 1em;
+    border-radius: 5px;
+    overflow-x: auto;
+    margin-bottom: 1em;
+}
+
+#preview pre code {
+    background-color: transparent;
+    padding: 0;
+    border-radius: 0;
+    font-size: 0.9em;
+}
+
+#preview hr {
+    border: none;
+    border-top: 1px solid var(--border-color);
+    margin: 2em 0;
+}
+
+/* 底部样式 */
+footer {
+    background-color: var(--footer-bg);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+}
+
+.markdown-guide {
+    margin-bottom: 20px;
+}
+
+.markdown-guide h3 {
+    margin-bottom: 15px;
+    color: var(--primary-color);
+}
+
+.guide-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.guide-item {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--card-bg);
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: var(--shadow);
+}
+
+.guide-item code {
+    font-family: "Consolas", monospace;
+    background-color: var(--code-bg);
+    padding: 5px;
+    border-radius: 3px;
+    margin-bottom: 5px;
+    font-size: 0.9em;
+}
+
+.copyright {
+    text-align: center;
+    font-size: 0.9em;
+    color: var(--text-color);
+    opacity: 0.7;
+}
+
+.copyright a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.copyright a:hover {
+    text-decoration: underline;
+}
+
+/* 对话框样式 */
+.dialog {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    overflow: auto;
+}
+
+.dialog-content {
+    background-color: var(--card-bg);
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 600px;
+    box-shadow: var(--shadow);
+    position: relative;
+}
+
+.close-dialog {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--text-color);
+}
+
+.dialog h2 {
+    color: var(--primary-color);
+    margin-bottom: 15px;
+}
+
+.dialog p,
+.dialog ul {
+    margin-bottom: 15px;
+}
+
+.dialog ul {
+    padding-left: 20px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    main {
+        flex-direction: column;
+    }
+
+    .editor-container,
+    .preview-container {
+        min-height: 300px;
+    }
+
+    #markdownInput,
+    #preview {
+        min-height: 300px;
+    }
+
+    .guide-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+}
