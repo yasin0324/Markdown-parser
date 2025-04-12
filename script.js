@@ -524,8 +524,10 @@ function hello() {
             margin-bottom: 1em;
             color: #555;
             background-color: rgba(168, 179, 255, 0.1);
-            padding: 0.5em 1em;
+            padding: 0.8em 1em;
             border-radius: 0 5px 5px 0;
+            font-style: italic;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
         code {
             font-family: 'Consolas', monospace;
