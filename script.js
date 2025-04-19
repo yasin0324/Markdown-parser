@@ -205,7 +205,7 @@ function hello() {
         // 解析有序列表
         html = parseOrderedLists(html);
 
-        // 解析引用 (> text)
+        // 解析引用块
         html = parseBlockquotes(html);
 
         // 解析表格
@@ -262,10 +262,17 @@ function hello() {
 
     // 解析引用块
     function parseBlockquotes(html) {
-        // 匹配引用块
-        return html.replace(/((^|\n)> [^\n]+)+/g, function (match) {
-            // 将每一行转换为引用内容
-            const content = match.replace(/^> |\n> /g, "\n").trim();
+        // 匹配【已经转义的】引用块 (查找 &gt; 而不是 >)
+        return html.replace(/((^|\n)&gt; [^\n]+)+/g, function (match) {
+            // 将每一行转换为引用内容，移除转义后的 > (&gt;)
+            const content = match
+                .replace(/^&gt; |\n&gt; /g, function (m) {
+                    // 如果匹配的是行首的 "&gt; "，则替换为空字符串
+                    // 如果匹配的是换行后的 "\n&gt; "，则替换为换行符 "\n"
+                    return m === "&gt; " ? "" : "\n";
+                })
+                .trim();
+            // 返回 blockquote 标签，内容是处理过的文本
             return `<blockquote>${content}</blockquote>`;
         });
     }
@@ -375,84 +382,67 @@ function hello() {
                 /\/\/(.*)$/gm,
                 '<span class="comment">//$1</span>'
             );
+            highlighted = highlighted.replace(
+                // 多行注释 /* ... */
+                /\/\*([\s\S]*?)\*\//g,
+                '<span class="comment">/*$1*/</span>'
+            );
         } else if (language === "html") {
-            // 标签高亮
+            // 标签高亮 (使用 .tag 类)
             highlighted = highlighted.replace(
                 /(&lt;\/?)(\w+)([^&]*?)(&gt;)/g,
-                '$1<span class="keyword">$2</span>$3$4'
+                '$1<span class="tag">$2</span>$3$4'
             );
             // 属性高亮
             highlighted = highlighted.replace(
                 /\s(\w+)=(["'])(.*?)\2/g,
                 ' <span class="attr">$1</span>=<span class="string">$2$3$2</span>'
             );
+            // HTML 注释 <!-- ... -->
+            highlighted = highlighted.replace(
+                /&lt;!--([\s\S]*?)--&gt;/g,
+                '<span class="comment">&lt;!--$1--&gt;</span>'
+            );
         } else if (language === "css") {
             // 选择器高亮
             highlighted = highlighted.replace(
-                /([\w\.-]+)\s*\{/g,
+                /([\w\.#-\[\]=\"']+)[^\{]*\{/g, // Improved selector matching
                 '<span class="selector">$1</span> {'
             );
-            // 属性高亮
+            // 属性高亮 (使用 .property 类)
             highlighted = highlighted.replace(
                 /([\w-]+)\s*:/g,
                 '<span class="property">$1</span>:'
             );
-            // 值高亮
+            // 值高亮 (使用 .value 类)
             highlighted = highlighted.replace(
-                /:\s*([^;\{]+);/g,
-                ': <span class="value">$1</span>;'
+                /:\s*([^;\}]+)/g, // Match until ; or }
+                ': <span class="value">$1</span>'
+            );
+            // CSS 注释 /* ... */
+            highlighted = highlighted.replace(
+                /\/\*([\s\S]*?)\*\//g,
+                '<span class="comment">/*$1*/</span>'
             );
         }
 
-        // 添加行号
+        // 生成带行号的 HTML 结构
         const lines = highlighted.split("\n");
-        highlighted = lines
+        const numberedLines = lines
             .map((line, index) => {
-                return `<span class="line-number">${index + 1}</span>${line}`;
+                // For empty lines, add a non-breaking space to ensure height
+                const lineContent = line || "&nbsp;";
+                return (
+                    `<span class="line">` +
+                    `<span class="line-number">${index + 1}</span>` +
+                    `<span class="line-content">${lineContent}</span>` +
+                    `</span>`
+                );
             })
-            .join("\n");
+            .join(""); // Join lines WITHOUT newline characters
 
         // 更新代码块内容
-        block.innerHTML = highlighted;
-
-        // 添加代码高亮样式
-        const style = document.createElement("style");
-        style.textContent = `
-            pre {
-                position: relative;
-                padding-left: 3.5em;
-                counter-reset: line;
-            }
-            pre code {
-                display: block;
-                font-family: 'Consolas', monospace;
-                white-space: pre;
-                overflow-x: auto;
-            }
-            .line-number {
-                position: absolute;
-                left: 0;
-                width: 2.5em;
-                text-align: right;
-                color: #888;
-                user-select: none;
-                padding-right: 0.5em;
-                border-right: 1px solid #ddd;
-                margin-right: 0.5em;
-            }
-            .keyword { color: #07a; }
-            .string { color: #690; }
-            .comment { color: #999; }
-            .selector { color: #905; }
-            .property { color: #07a; }
-            .value { color: #690; }
-            .attr { color: #07a; }
-        `;
-
-        if (!document.querySelector("style[data-highlight]")) {
-            style.setAttribute("data-highlight", "true");
-            document.head.appendChild(style);
-        }
+        block.innerHTML = numberedLines;
     }
 
     // 复制到剪贴板函数
